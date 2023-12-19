@@ -14,13 +14,14 @@ const createUser = (newUser) => {
         resolve({
           status: 200,
           message: "Username is already registered",
-        });
+        }); 
       }
       const hashPassword = bcrypt.hashSync(password, 10);
       // console.log(hashPassword);
       const createdUser = await UserModel.create({
         username,
         password: hashPassword,
+        role: "Student"
       });
       if (createdUser) {
         resolve({

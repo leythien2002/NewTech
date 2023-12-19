@@ -46,6 +46,8 @@ const authAdminMiddleWare = (req, res, next) => {
     }
   });
 };
+
+
 module.exports = {
   authMiddleWare,authAdminMiddleWare
 };
