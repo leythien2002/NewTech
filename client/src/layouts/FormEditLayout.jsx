@@ -1,6 +1,6 @@
 import { Button, Form, notification } from 'antd';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -22,6 +22,12 @@ const validateMessages = {
 
 const FormLayout = ({submitApiUrl, entityName, routerUrl, fields}) => {
   const navigate = useNavigate();
+  const params = useParams()
+const [data, setData] = React.useState()
+
+  const loadData = () => {
+    axios.get('localhost:3001/')
+  }
 
   const onFinish = (values) => {
     axios.post(`${submitApiUrl}`, {

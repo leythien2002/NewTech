@@ -12,8 +12,23 @@ const Update = () => {
       fields={
         [
           {
-            name: 'test',
-            label: 'test',
+            name: 'username',
+            label: 'User Name',
+            children: <Input />
+          },
+          {
+            name: 'name',
+            label: 'Display Name',
+            children: <Input />
+          },
+          {
+            name: 'password',
+            label: 'Password',
+            children: <Input />
+          },
+          {
+            name: 'role',
+            label: 'Role',
             children: <Input />
           }
         ]
