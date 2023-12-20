@@ -17,7 +17,7 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="" element={<ProtectedLayout />}>
+        <Route path="" element={<ProtectedLayout />}> 
           <Route path="/user" element={<UserList />} />
           <Route path="/user/create" element={<CreateUserPage />} />
           <Route path="/user/update/:id" element={<UpdateUserPage />} />

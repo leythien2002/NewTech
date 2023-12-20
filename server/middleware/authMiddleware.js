@@ -14,7 +14,6 @@ const authMiddleWare = (req, res, next) => {
     }
     const { payload } = user;
     if (payload.role === "admin") {
-      console.log("is admin");
       next();
     } else {
       return res.status(404).json({
@@ -36,7 +35,6 @@ const authAdminMiddleWare = (req, res, next) => {
     }
     const { payload } = user;
     if (payload?.role === "admin" || payload?.id === userId) {
-      console.log("is admin");
       next();
     } else {
       return res.status(404).json({

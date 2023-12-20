@@ -43,13 +43,27 @@ const DataTable = () => {
             <Button
               type="text"
               title="Delete"
-              icon={<DeleteOutlined />}
+              icon={<DeleteOutlined 
+                onClick={() => navigate(`/user/update/${params.id}`)}/>}
             />
           </Space>
         )}
     },
     
 ];
+
+  const deleteUser=(id)=>{
+    axios.delete('http://localhost:3001/admin/delete/:id', { headers: { token: access_token }  })
+    .then((res) => {
+      const mappedRows = res.data.data.map((user) => ({
+      id: user._id,
+      username: user.username,
+      role: user.role,
+      action: 'Xoá'
+    }));
+      setRows(mappedRows)
+    }).catch((error) => console.log((error)))
+  }
 
   const loadDataTable = () => {
     const access_token = 'Beare '+localStorage.getItem('access_token')
@@ -64,6 +78,7 @@ const DataTable = () => {
       setRows(mappedRows)
     }).catch((error) => console.log((error)))
   }
+  
 
   console.log('data rows', rows)
   

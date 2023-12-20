@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const layout = {
   labelCol: { span: 8 },
@@ -20,38 +21,62 @@ const validateMessages = {
   },
 };
 
-const FormLayout = ({submitApiUrl, entityName, routerUrl, fields}) => {
+const FormEditLayout = ({submitApiUrl, entityName, routerUrl, fields}) => {
   const navigate = useNavigate();
   const params = useParams()
 const [data, setData] = React.useState()
+const [form]=Form.useForm()
 
-  const loadData = () => {
-    axios.get('localhost:3001/')
+
+const loadData = () => {
+  console.log("requestData")
+  console.log(params.id)
+    axios.get(`http://localhost:3001/auth/getUser/${params.id}`)
+    .then(response=>{
+      console.log(response.data)
+      if(response.status === 200){
+        setData(response.data.data)
+      }
+      return;
+    })
+    .catch(err => {
+      console.log("GetUserProfile",err)
+    })
   }
 
-  const onFinish = (values) => {
-    axios.post(`${submitApiUrl}`, {
-      header:{token:`Beare ${localStorage.getItem('access_token')}`},
-      data: { ...values },
+useEffect(()=>{
+  form.setFieldsValue(data)
+}, [data])
+useEffect(()=>{
+  loadData()
+}, [])
+
+const onFinish = (values) => {
+  console.log("Onfinishvalue", values)
+    axios.put(`${submitApiUrl}`, {
+      // header:{token:`Beare ${localStorage.getItem('access_token')}`},
+      data: { ...values, _id:params.id },
     })
-      .then(() => {
+  
+      .then(response => {
         navigate(`${routerUrl}`);
+        console.log("aloalo",response.data)
         return notification.success({
           message: `Create ${entityName} successfully`,
         });
       })
       .catch((err) => {
         console.log(err)
+        console.log(data)
         // navigate(`${routerUrl}`);
         return notification.error({
-        
           message: `Create ${entityName} failed`,
           description: err.message,
         });
       });
   };
   return (
-    <Form {...layout} validateMessages={validateMessages} onFinish={onFinish}>
+    <Form form={form} {...layout} validateMessages={validateMessages} onFinish={onFinish}>
       {fields.map((field) => (
         <Form.Item
           key={field.key}
@@ -70,4 +95,4 @@ const [data, setData] = React.useState()
   );
 };
 
-export default FormLayout;
+export default FormEditLayout;

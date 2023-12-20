@@ -48,6 +48,26 @@ const getDetailUser = async (req, res, next) => {
     });
   }
 };
+const update = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const data = req.body;
+    console.log("data ne`",data)
+    if (!userId) {
+      return res.status(200).json({
+        status: "ERROR",
+        message: "The UserID is required",
+      });
+    }
+    console.log("userId: ", userId);
+    const response = await UserService.update(userId, data);
+    return res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+};
 const refreshToken = async (req, res, next) => {
   try {
     const token = req.headers.token.split(' ')[1];
@@ -65,4 +85,4 @@ const refreshToken = async (req, res, next) => {
     });
   }
 };
-module.exports = { login, register,refreshToken,getDetailUser };
+module.exports = { login, register,refreshToken,getDetailUser,update };

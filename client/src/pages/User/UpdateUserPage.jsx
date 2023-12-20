@@ -1,14 +1,16 @@
 import React from 'react'
-import FormLayout from '../../layouts/FormLayout'
+import FormEditLayout from '../../layouts/FormEditLayout'
 import Input from 'antd/es/input/Input'
+import { useNavigate, useParams } from 'react-router-dom';
 import { Select } from 'antd'
-const Update = () => {
+const UpdateUserPage = () => {
+  const params = useParams()
   return (
     <div>
-      <FormLayout 
+      <FormEditLayout
       entityName={'test'} 
-      routerUrl={'/user/list'}
-      submitApiUrl={'/route3'} 
+      routerUrl={'/'}
+      submitApiUrl={`http://localhost:3001/auth/update/${params.id}`} 
       fields={
         [
           {
@@ -34,9 +36,9 @@ const Update = () => {
         ]
       }>
       
-      </FormLayout>
+      </FormEditLayout>
     </div>  
     )
 }
 
-export default Update
+export default UpdateUserPage
