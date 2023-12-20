@@ -178,6 +178,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get all file",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},

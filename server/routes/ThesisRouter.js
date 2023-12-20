@@ -14,5 +14,6 @@ router.get("/getAll", thesisController.getAll);
 router.get("/get/:id",authThesisMiddleWare, thesisController.getDetailUser); 
 router.post("/addfile", upload.single('file_pdf'), thesisController.uploadFile); 
 router.get("/getfile/:id",authThesisMiddleWare, thesisController.getFileById); 
+router.get("/detail/:id",authThesisMiddleWare, thesisController.getFileByThesisId); 
 
-module.exports = router;        
+module.exports = router;            

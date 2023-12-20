@@ -133,23 +133,6 @@ const deleteThesis = (id, data) => {
   });
 };
 
-// const uploadFile = async ({ file, file_name,  thesis }) => {
-//   try {
-//     const newFile = new FileThesis({
-//       file_data: file.buffer,
-//       file_name,
-//       created_time: new Date(),
-//       thesis,
-//     });
-
-//     const savedFile = await newFile.save();
-//     return savedFile;
-//   } catch (error) {
-//     console.error(error);
-//     throw new Error('Internal Server Error');
-//   }
-// };
-
 const uploadFile = ({ file_pdf, file_name,  thesis }) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -187,6 +170,17 @@ const getFileById = async (fileId) => {
     throw new Error('Internal Server Error');
   }
 };
+const getFileByThesisId =async (thesisId)=> {
+  try {
+    const files = await FileThesis.find({thesis: thesisId});
+
+    // console.log(file)
+    return files;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Internal Server Error');
+  }
+};
 module.exports = {
   add,
   update,
@@ -194,6 +188,7 @@ module.exports = {
   getDetailUser,
   deleteThesis,
   uploadFile,
-  getFileById
+  getFileById,
+  getFileByThesisId
 
 };

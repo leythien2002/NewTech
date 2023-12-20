@@ -124,15 +124,21 @@ const add = async (req, res) => {
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename=${file.file_name}.pdf`);
       res.setHeader('Content-Length', file.file_data.length);
-
-  
-
       res.end(file.file_data);
-
-
-    } catch (error) {
+  } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
-  module.exports = {add,update,getAll,getDetailUser,deleteThesis,uploadFile,getFileById};
+  const getFileByThesisId = async (req, res, next) => {
+    try {
+      const thesisId = req.params.id;
+      const response = await ThesisService.getFileByThesisId(thesisId);
+      return res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({
+        message: error,
+      });
+    }
+  };
+  module.exports = {add,update,getAll,getDetailUser,deleteThesis,uploadFile,getFileById,getFileByThesisId};
