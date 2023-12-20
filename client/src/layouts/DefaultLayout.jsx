@@ -5,9 +5,9 @@ import { Navigate, Outlet } from 'react-router-dom'
 const DefaultLayout = () => {
     const { user } = useAuth();
     console.log('default layout')
-  if (user) {
-    return <Navigate to="/" />;
-  }
+  // if (user) {
+  //   return <Navigate to="/" />;
+  // }
   return <Outlet />
 }
 

@@ -5,7 +5,7 @@ const jwtService = require("./JwtService");
 const createUser = (newUser) => {
   return new Promise(async (resolve, reject) => {
     console.log(newUser);
-    const { username, password } = newUser;
+    const { username, password,role,name } = newUser;
     try {
       const existedUser = await UserModel.findOne({
         username: username,
@@ -14,14 +14,15 @@ const createUser = (newUser) => {
         resolve({
           status: 200,
           message: "Username is already registered",
-        }); 
+        });
       }
       const hashPassword = bcrypt.hashSync(password, 10);
       // console.log(hashPassword);
       const createdUser = await UserModel.create({
         username,
         password: hashPassword,
-        role: "Student"
+        role,
+        name
       });
       if (createdUser) {
         resolve({
@@ -67,8 +68,6 @@ const loginUser = (loginInfor) => {
         password: existedUser.password,
         role: existedUser.role,
       });
-
-      console.log(access_token);
       const refresh_token = await jwtService.generalRefreshToken({
         id: existedUser.id,
         username: existedUser.username,
@@ -80,6 +79,7 @@ const loginUser = (loginInfor) => {
         message: "LOGIN SUCESS",
         access_token: access_token,
         refresh_token: refresh_token,
+        id: existedUser.id
       });
     } catch (e) {
       reject(e);

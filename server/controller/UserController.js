@@ -21,7 +21,8 @@ const login = async (req, res, next) => {
 };
 const register = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const { username, password,role,name } = req.body;
+    console.log("Request Body",req.body);
     if (!username || !password) {
       return res.status(200).json({
         status: "ERROR",
@@ -29,6 +30,17 @@ const register = async (req, res, next) => {
       });
     }
     const response = await UserService.createUser(req.body);
+    return res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+};
+const getDetailUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const response = await UserService.getDetailUser(userId);
     return res.status(200).json(response);
   } catch (error) {
     res.status(500).json({
@@ -53,4 +65,4 @@ const refreshToken = async (req, res, next) => {
     });
   }
 };
-module.exports = { login, register,refreshToken };
+module.exports = { login, register,refreshToken,getDetailUser };

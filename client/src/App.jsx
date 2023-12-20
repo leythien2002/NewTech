@@ -10,7 +10,7 @@ import DataTable from "./components/Table/TableComponent";
 import UserList from "./pages/User/UserListPage";
 import { AuthProvider } from "./context/AuthProvider";
 import UpdateUserPage from "./pages/User/UpdateUserPage";
-
+import CreateUserPage from "./pages/User/CreateUserPage";
 
 
 function App() {
@@ -18,10 +18,9 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route path="" element={<ProtectedLayout />}>
-
-          <Route path="/user/list" element={<UserList />} />
-          <Route path="/user/create" element={<UpdateUserPage />} />
-
+          <Route path="/user" element={<UserList />} />
+          <Route path="/user/create" element={<CreateUserPage />} />
+          <Route path="/user/update/:id" element={<UpdateUserPage />} />
         </Route>
         <Route path="" element={<DefaultLayout />}>
           <Route path="/auth/login" element={<Login />} />

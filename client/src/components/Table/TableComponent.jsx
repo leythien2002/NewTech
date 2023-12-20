@@ -3,8 +3,25 @@ import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Button, Space } from 'antd'
+import { useNavigate } from 'react-router-dom';
 
-const columns = [
+// const rows = [
+//     { id: 1, username: 'Snow', role: 'Jon'},
+// ];
+
+// const rows = data.map((job) => ({
+//     id: job._id,
+//     title: job.title,
+//     salary: job.salary,
+//     address: `${job.postedBy.location.city}, ${job.postedBy.location.district}` || 'Unknown',
+//     state: job.isAccepted,
+//     action: 'Xoá',
+// }));
+const DataTable = () => {
+  const navigate = useNavigate();
+  const [rows, setRows] = useState([])
+
+  const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'username', headerName: 'User Name', width: 130 },
     { field: 'role', headerName: 'Role', width: 130 },
@@ -19,7 +36,8 @@ const columns = [
             <Space size="small">
               <Button
                 type="text"
-                title="Delete"
+                title="Update"
+                onClick={() => navigate(`/user/update/${params.id}`)}
                 icon={<EditOutlined />}
               />
             <Button
@@ -32,22 +50,6 @@ const columns = [
     },
     
 ];
-// const rows = [
-//     { id: 1, username: 'Snow', role: 'Jon'},
-// ];
-
-// const rows = data.map((job) => ({
-//     id: job._id,
-//     title: job.title,
-//     salary: job.salary,
-//     address: `${job.postedBy.location.city}, ${job.postedBy.location.district}` || 'Unknown',
-//     state: job.isAccepted,
-//     action: 'Xoá',
-// }));
-const DataTable = () => {
-
-  const [rows, setRows] = useState([])
-
 
   const loadDataTable = () => {
     const access_token = 'Beare '+localStorage.getItem('access_token')

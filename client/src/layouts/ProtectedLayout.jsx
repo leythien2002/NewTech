@@ -9,9 +9,9 @@ function ProtectedLayout() {
   const [activeSidebar, setActiveSidebar] = useState(true);
   console.log('protected layout')
   const { user } = useAuth();
-  if (!user) {
-    return <Navigate to="/auth/login" />;
-  }
+  // if (!user) {
+  //   return <Navigate to="/auth/login" />;
+  // }
 
   return (
     <div className="flex bg-[#EEE]">

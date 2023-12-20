@@ -36,8 +36,8 @@ function Sidebar(props) {
           isActiveSidebar={props.isActiveSidebar}
           childrenItem={[
             {
-              to: 'label',
-              title: 'title1'
+              to: '/user',
+              title: 'ListUser'
             },
             {
               to: 'label',
