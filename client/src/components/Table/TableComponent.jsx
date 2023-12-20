@@ -1,10 +1,10 @@
-import { DataGrid} from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Button, Space } from 'antd'
 import { useNavigate } from 'react-router-dom';
-
+import { notification } from 'antd';
 // const rows = [
 //     { id: 1, username: 'Snow', role: 'Jon'},
 // ];
@@ -26,68 +26,73 @@ const DataTable = () => {
     { field: 'username', headerName: 'User Name', width: 130 },
     { field: 'role', headerName: 'Role', width: 130 },
     {
-        field: 'action',
-        headerName: 'Action',
-        type: 'number',
-        width: 90,
-        renderCell: (params) => {
-          console.log(params)
-          return (
-            <Space size="small">
-              <Button
-                type="text"
-                title="Update"
-                onClick={() => navigate(`/user/update/${params.id}`)}
-                icon={<EditOutlined />}
-              />
+      field: 'action',
+      headerName: 'Action',
+      type: 'number',
+      width: 90,
+      renderCell: (params) => {
+        console.log(params)
+        return (
+          <Space size="small">
+            <Button
+              type="text"
+              title="Update"
+              onClick={() => navigate(`/user/update/${params.id}`)}
+              icon={<EditOutlined />}
+            />
             <Button
               type="text"
               title="Delete"
-              icon={<DeleteOutlined 
-                onClick={() => navigate(`/user/update/${params.id}`)}/>}
+              icon={<DeleteOutlined
+                onClick={() => deleteUser(params.id)} />}
             />
           </Space>
-        )}
+        )
+      }
     },
-    
-];
 
-  const deleteUser=(id)=>{
-    axios.delete('http://localhost:3001/admin/delete/:id', { headers: { token: access_token }  })
-    .then((res) => {
-      const mappedRows = res.data.data.map((user) => ({
-      id: user._id,
-      username: user.username,
-      role: user.role,
-      action: 'Xoá'
-    }));
-      setRows(mappedRows)
-    }).catch((error) => console.log((error)))
+  ];
+
+  const deleteUser = (id) => {
+    console.log(localStorage.getItem('access_token'))
+    axios.delete(
+      `http://localhost:3001/admin/delete/${id}`,
+      {
+        headers: { token:`Beare ${localStorage.getItem('access_token')}` }
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          navigate('/');
+          return notification.success({
+            message: `Create Delete successfully`,
+          });
+        }
+      }).catch((error) => console.log((error)))
   }
 
   const loadDataTable = () => {
-    const access_token = 'Beare '+localStorage.getItem('access_token')
-    axios.get('http://localhost:3001/admin/getAll', { headers: { token: access_token }  })
-    .then((res) => {
-      const mappedRows = res.data.data.map((user) => ({
-      id: user._id,
-      username: user.username,
-      role: user.role,
-      action: 'Xoá'
-    }));
-      setRows(mappedRows)
-    }).catch((error) => console.log((error)))
+    const access_token = 'Beare ' + localStorage.getItem('access_token')
+    axios.get('http://localhost:3001/admin/getAll', { headers: { token: access_token } })
+      .then((res) => {
+        const mappedRows = res.data.data.map((user) => ({
+          id: user._id,
+          username: user.username,
+          role: user.role,
+          action: 'Xoá'
+        }));
+        setRows(mappedRows)
+      }).catch((error) => console.log((error)))
   }
-  
+
 
   console.log('data rows', rows)
-  
-    useEffect(() => {
-      loadDataTable()
-    }, [])
 
-    return (
-      <div style={{ height: 400, width: '100%' }}>
+  useEffect(() => {
+    loadDataTable()
+  }, [])
+
+  return (
+    <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -100,7 +105,7 @@ const DataTable = () => {
         checkboxSelection
       />
     </div>
-    );
+  );
 }
 
 export default DataTable;
