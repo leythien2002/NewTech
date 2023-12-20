@@ -1,6 +1,7 @@
 const ThesisModel = require("../models/ThesisModel");
 const bcrypt = require("bcrypt");
 const jwtService = require("./JwtService");
+const FileThesis = require('../models/FileThesis');
 
 const add = (newThesis) => {
   return new Promise(async (resolve, reject) => {
@@ -44,7 +45,6 @@ const update = (id, data) => {
       const existed = await ThesisModel.findOne({
         _id: id,
       });
-      // console.log('existed User', existedUser);
       if (existed === null) {
         resolve({
           status: 200,
@@ -132,11 +132,68 @@ const deleteThesis = (id, data) => {
     }
   });
 };
+
+// const uploadFile = async ({ file, file_name,  thesis }) => {
+//   try {
+//     const newFile = new FileThesis({
+//       file_data: file.buffer,
+//       file_name,
+//       created_time: new Date(),
+//       thesis,
+//     });
+
+//     const savedFile = await newFile.save();
+//     return savedFile;
+//   } catch (error) {
+//     console.error(error);
+//     throw new Error('Internal Server Error');
+//   }
+// };
+
+const uploadFile = ({ file_pdf, file_name,  thesis }) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+     
+      const createdFileThesis = await FileThesis.create({
+        file_data: file_pdf.buffer,
+        file_name,
+        created_time: new Date(),
+        thesis,
+      });
+      if (createdFileThesis) {
+        resolve({
+          status: "OK",
+          message: "CREATE SUCESS",
+          data: createdFileThesis,
+        });
+      } else {
+        console.log(`error`);
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+const getFileById = async (fileId) => {
+  try {
+    const file = await FileThesis.findById(fileId);
+    if (!file) {
+      throw new Error('File not found');
+    }
+    // console.log(file)
+    return file;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Internal Server Error');
+  }
+};
 module.exports = {
   add,
   update,
   getAll,
   getDetailUser,
-  deleteThesis
+  deleteThesis,
+  uploadFile,
+  getFileById
 
 };

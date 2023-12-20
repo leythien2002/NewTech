@@ -87,4 +87,52 @@ const add = async (req, res) => {
       });
     }
   };
-  module.exports = {add,update,getAll,getDetailUser,deleteThesis};
+  const uploadFile = async (req, res) => {
+    try { 
+      const { file_name, thesis } = req.body;
+
+      
+      console.log(file_name)
+      console.log(thesis)
+
+      const savedFile = await ThesisService.uploadFile({
+        file_pdf:req.file,
+        file_name,
+        thesis,
+      });
+  
+      res.status(201).json(savedFile);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  const getFileById = async (req, res) => {
+    try {
+      const fileId = req.params.id;
+      if (!fileId) {
+        return res.status(200).json({
+          status: "ERROR",
+          message: "The fileId is required",
+        });
+      }
+      const file = await ThesisService.getFileById(fileId);
+      if (!file.file_data || !file.file_data.buffer) {
+        return res.status(404).json({ error: 'File not found' }); 
+      }
+      // Set the appropriate response headers for PDF
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename=${file.file_name}.pdf`);
+      res.setHeader('Content-Length', file.file_data.length);
+
+  
+
+      res.end(file.file_data);
+
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  module.exports = {add,update,getAll,getDetailUser,deleteThesis,uploadFile,getFileById};
